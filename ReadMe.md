@@ -30,7 +30,9 @@ This project is built using Spring Boot and Kotlin. Key dependencies include:
 
 ## Build and Run
 1. **Clone the Repository:** Clone this repository to your local environment.
-
+```bash
+git clone https://github.com/piyushrohan/HotelierListings.git
+```
 2. **Build** Maven is used as build tool, execute the following command:
 ```bash
 mvn clean install
@@ -41,7 +43,6 @@ mvn clean install
 docker-compose up
 ```
 `ports: 8080 for application and 5432 for postgres`
-4. You may skip step 2 and run docker compose directly :)
 
 ## API Documentation & Postman Collections
 

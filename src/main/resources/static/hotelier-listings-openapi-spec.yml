@@ -1,0 +1,477 @@
+openapi: 3.0.3
+info:
+  title: Hotelier accommodation listings API
+  description:
+        "This OpenAPI specification defines the Hotelier API, designed to streamline interactions between applications and the hotelier domain. The API version 1.0.0 offers endpoints for accommodations, locations, and bookings management.
+        Endpoints
+        `/accommodations`: CRUD operations for accommodations.
+        `/locations`: CRUD operations for locations.
+        `/locations/{location_id}`: Operations for single location by ID.
+        `/accommodations/{accommodation_id}`: Operations for single accommodation by ID.
+        `/bookings`: Operations for managing bookings.
+        `/bookings/{booking_id}`: Operations for single booking by ID.
+        `/accommodations/rating/{rating}`: Retrieving accommodations by rating.
+        `/accommodations/city/{city}`: Retrieving accommodations by city.
+        `/accommodations/reputationBadge/{reputationBadge}`: Retrieving accommodations by reputation badge.
+        Components
+        `Accommodation`: Properties such as name, rating, category, location, image, reputation, price, and availability.
+        `Location`: Properties including city, state, country, zip code, and address.
+        `Booking`: Properties like accommodation ID and booking date.
+        Hoteliers can integrate applications with this API to create, retrieve, update, and delete accommodations, locations, and bookings. The API provides structured request and response formats, aiding seamless communication between applications and the hotelier ecosystem."
+
+  version: 1.0.0
+paths:
+  /accommodations:
+    get:
+      tags:
+        - HotelierAPI
+      summary: Get all the accommodations for the hotelier
+      operationId: accommodationsGet
+      responses:
+        '200':
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Accommodation'
+    post:
+      tags:
+        - HotelierAPI
+      summary: Create a new accommodation for the hotelier
+      operationId: accommodationPost
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Accommodation'
+      responses:
+        '201':
+          description: A successful creation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Accommodation'
+        '400':
+          description: A bad request
+  /locations:
+    get:
+      tags:
+        - HotelierAPI
+      summary: Get all the locations for all hoteliers
+      operationId: locationsGet
+      responses:
+        '200':
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Location'
+    post:
+      tags:
+        - HotelierAPI
+      summary: Create a new location
+      operationId: locationPost
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Location'
+      responses:
+        '201':
+          description: A successful creation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Location'
+        '400':
+          description: A bad request
+  /locations/{location_id}:
+    get:
+      tags:
+        - HotelierAPI
+      summary: Get a single location by it's id
+      operationId: locationIdGet
+      parameters:
+        - name: location_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Location'
+        '404':
+          description: Location not found
+    put:
+      tags:
+        - HotelierAPI
+      summary: Update an existing location by it's id
+      operationId: locationIdPut
+      parameters:
+        - name: location_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Location'
+      responses:
+        '200':
+          description: A successful update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Location'
+        '400':
+          description: A bad request
+        '404':
+          description: Location not found
+    delete:
+      tags:
+        - HotelierAPI
+      summary: Delete an existing location by it's id
+      operationId: locationIdDelete
+      parameters:
+        - name: location_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: A successful deletion
+        '404':
+          description: Location not found
+  /accommodations/{accommodation_id}:
+    get:
+      tags:
+        - HotelierAPI
+      summary: Get a single accommodation by it's id
+      operationId: accommodationIdGet
+      parameters:
+        - name: accommodation_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Accommodation'
+        '404':
+          description: An accommodation not found
+    put:
+      tags:
+        - HotelierAPI
+      summary: Update an existing accommodation by it's id
+      operationId: accommodationIdPut
+      parameters:
+        - name: accommodation_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Accommodation'
+      responses:
+        '200':
+          description: A successful update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Accommodation'
+        '400':
+          description: A bad request
+        '404':
+          description: An accommodation not found
+    delete:
+      tags:
+        - HotelierAPI
+      summary: Delete an existing accommodation by it's id
+      operationId: accommodationIdDelete
+      parameters:
+        - name: accommodation_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: A successful deletion
+        '404':
+          description: An accommodation not found
+  /bookings:
+    get:
+      tags:
+        - HotelierAPI
+      summary: Get all the bookings for all hoteliers
+      operationId: bookingsGet
+      responses:
+        '200':
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Booking'
+    post:
+      tags:
+        - HotelierAPI
+      summary: Book an accommodation by it's accommodation_id
+      operationId: bookingPost
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Booking'
+      responses:
+        '201':
+          description: A successful creation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booking'
+        '400':
+          description: A bad request
+  /bookings/{booking_id}:
+    get:
+      tags:
+        - HotelierAPI
+      summary: Get a single booking by it's id
+      operationId: bookingIdGet
+      parameters:
+        - name: booking_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booking'
+        '404':
+          description: Booking not found
+    delete:
+      tags:
+        - HotelierAPI
+      summary: Delete an existing booking by it's id
+      operationId: bookingIdDelete
+      parameters:
+        - name: booking_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: A successful deletion
+        '404':
+          description: Booking not found
+  /accommodations/rating/{rating}:
+    get:
+      tags:
+        - HotelierAPI
+      summary: Get accommodations with a specific rating
+      operationId: accommodationsByRatingGet
+      parameters:
+        - name: rating
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 0
+            maximum: 5
+      responses:
+        '200':
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Accommodation'
+        '404':
+          description: No accommodations found with the specified rating
+  /accommodations/city/{city}:
+    get:
+      tags:
+        - HotelierAPI
+      summary: Get accommodations located in a specific city
+      operationId: accommodationsByCityGet
+      parameters:
+        - name: city
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Accommodation'
+        '404':
+          description: No accommodations found in the specified city
+  /accommodations/reputationBadge/{reputationBadge}:
+    get:
+      tags:
+        - HotelierAPI
+      summary: Get accommodations with a specific reputation badge
+      operationId: accommodationsByReputationBadgeGet
+      parameters:
+        - name: reputationBadge
+          in: path
+          required: true
+          schema:
+            type: string
+            enum:
+              - red
+              - yellow
+              - green
+      responses:
+        '200':
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Accommodation'
+        '404':
+          description: No accommodations found with the specified reputation badge
+
+components:
+  schemas:
+    Accommodation:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          description: Accommodation name
+          minLength: 11  # Minimum length of 11 characters
+          not:
+            pattern: ".*(Free|Offer|Book|Website).*"  # Avoid specific words
+        rating:
+          type: integer
+          description: Rating from 0 to 5
+          minimum: 0
+          maximum: 5
+        category:
+          type: string
+          description: Category of the accommodation
+          enum:
+            - hotel
+            - alternative
+            - hostel
+            - lodge
+            - resort
+            - guest_house
+        location_id:
+          type: integer
+          description: The id of the location
+        image:
+          type: string
+          format: uri
+          description: URL of the main image
+        reputation:
+          type: integer
+          description: Reputation from 0 to 1000
+          minimum: 0
+          maximum: 1000
+        reputationBadge:
+          type: string
+          description: Color of the reputation badge, either green, yellow or red
+          enum:
+            - red
+            - yellow
+            - green
+        price:
+          type: integer
+          description: Price in local currency units
+          minimum: 0
+        availability:
+          type: integer
+          description: Number of available rooms
+      required:
+        - name
+        - rating
+        - category
+        - location_id
+        - image
+        - reputation
+        - price
+        - availability
+    Location:
+      type: object
+      description: Location of the accommodation
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        city:
+          type: string
+          description: City name
+        state:
+          type: string
+          description: State name
+        country:
+          type: string
+          description: Country name
+        zip_code:
+          type: integer
+          description: Zip code is an integer and has a length of 5
+          minimum: 10000
+          maximum: 99999
+        address:
+          type: string
+          description: Street address
+      required:
+        - zip_code
+    Booking:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        accommodation_id:
+          type: integer
+          description: The id of the booked accommodation
+        date:
+          type: string
+          format: date-time
+          description: The date and time of the booking
+          example: "2023-08-14T15:36:36+05:30"
+      required:
+        - accommodation_id

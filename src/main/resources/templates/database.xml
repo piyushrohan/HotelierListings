@@ -1,0 +1,184 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+    <changeSet author="piyush" id="1">
+        <createTable tableName="locations">
+            <column name="id" type="SERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="city" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="state" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="country" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="zip_code" type="VARCHAR(255)">
+                <constraints nullable="false" checkConstraint="zip_code BETWEEN '10000' AND '99999'"/>
+            </column>
+            <column name="address" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="piyush" id="2">
+        <createTable tableName="accommodations">
+            <column name="id" type="SERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rating" type="INT">
+                <constraints nullable="false" checkConstraint="rating BETWEEN 0 AND 5"/>
+            </column>
+            <column name="category" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="location_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="image" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reputation" type="INT">
+                <constraints nullable="false" checkConstraint="reputation BETWEEN 0 AND 1000"/>
+            </column>
+            <column name="reputation_badge" type="TEXT">
+                <constraints nullable="false" checkConstraint="reputation_badge IN ('GREEN', 'YELLOW', 'RED')"/>
+            </column>
+            <column name="price" type="DECIMAL(10,2)">
+                <constraints nullable="false" checkConstraint="price >= 0"/>
+            </column>
+            <column name="availability" type="INT">
+                <constraints nullable="false" checkConstraint="availability >= 0"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="piyush" id="3">
+        <createTable tableName="bookings">
+            <column name="id" type="SERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="accommodation_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="piyush" id="4">
+        <addForeignKeyConstraint baseTableName="accommodations" baseColumnNames="location_id"
+                                 constraintName="fk_location_accommodation"
+                                 referencedTableName="locations" referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet author="piyush" id="5">
+        <addForeignKeyConstraint baseTableName="bookings" baseColumnNames="accommodation_id"
+                                 constraintName="fk_accommodation_booking"
+                                 referencedTableName="accommodations" referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet author="piyush" id="6">
+        <insert tableName="locations">
+            <column name="city" value="New York"/>
+            <column name="state" value="New York"/>
+            <column name="country" value="United States"/>
+            <column name="zip_code" value="10001"/>
+            <column name="address" value="123 Main St"/>
+        </insert>
+        <insert tableName="locations">
+            <column name="city" value="Los Angeles"/>
+            <column name="state" value="California"/>
+            <column name="country" value="United States"/>
+            <column name="zip_code" value="90001"/>
+            <column name="address" value="456 Elm St"/>
+        </insert>
+        <insert tableName="locations">
+            <column name="city" value="London"/>
+            <column name="state" value="England"/>
+            <column name="country" value="United Kingdom"/>
+            <column name="zip_code" value="58729"/>
+            <column name="address" value="789 Baker St"/>
+        </insert>
+        <insert tableName="locations">
+            <column name="city" value="Tokyo"/>
+            <column name="state" value="Tokyo"/>
+            <column name="country" value="Japan"/>
+            <column name="zip_code" value="10890"/>
+            <column name="address" value="101 Sakura Ave"/>
+        </insert>
+        <insert tableName="locations">
+            <column name="city" value="Paris"/>
+            <column name="state" value="Île-de-France"/>
+            <column name="country" value="France"/>
+            <column name="zip_code" value="75000"/>
+            <column name="address" value="202 Eiffel Tower Rd"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="piyush" id="7">
+        <insert tableName="accommodations">
+            <column name="name" value="Luxury Hotel A"/>
+            <column name="rating" valueNumeric="5"/>
+            <column name="category" value="HOTEL"/>
+            <column name="location_id" valueNumeric="1"/>
+            <column name="image" value="hotel_image_1.jpg"/>
+            <column name="reputation" valueNumeric="950"/>
+            <column name="reputation_badge" value="GREEN"/>
+            <column name="price" valueNumeric="300.00"/>
+            <column name="availability" valueNumeric="20"/>
+        </insert>
+        <insert tableName="accommodations">
+            <column name="name" value="Cozy Inn"/>
+            <column name="rating" valueNumeric="4"/>
+            <column name="category" value="ALTERNATIVE"/>
+            <column name="location_id" valueNumeric="2"/>
+            <column name="image" value="hotel_image_2.jpg"/>
+            <column name="reputation" valueNumeric="750"/>
+            <column name="reputation_badge" value="YELLOW"/>
+            <column name="price" valueNumeric="150.00"/>
+            <column name="availability" valueNumeric="15"/>
+        </insert>
+        <insert tableName="accommodations">
+            <column name="name" value="Seaside Resort"/>
+            <column name="rating" valueNumeric="4"/>
+            <column name="category" value="RESORT"/>
+            <column name="location_id" valueNumeric="3"/>
+            <column name="image" value="hotel_image_3.jpg"/>
+            <column name="reputation" valueNumeric="850"/>
+            <column name="reputation_badge" value="GREEN"/>
+            <column name="price" valueNumeric="250.00"/>
+            <column name="availability" valueNumeric="30"/>
+        </insert>
+        <insert tableName="accommodations">
+            <column name="name" value="City View Suites"/>
+            <column name="rating" valueNumeric="4"/>
+            <column name="category" value="HOTEL"/>
+            <column name="location_id" valueNumeric="4"/>
+            <column name="image" value="hotel_image_4.jpg"/>
+            <column name="reputation" valueNumeric="300"/>
+            <column name="reputation_badge" value="RED"/>
+            <column name="price" valueNumeric="180.00"/>
+            <column name="availability" valueNumeric="25"/>
+        </insert>
+        <insert tableName="accommodations">
+            <column name="name" value="Mountain Lodge"/>
+            <column name="rating" valueNumeric="3"/>
+            <column name="category" value="LODGE"/>
+            <column name="location_id" valueNumeric="5"/>
+            <column name="image" value="hotel_image_5.jpg"/>
+            <column name="reputation" valueNumeric="700"/>
+            <column name="reputation_badge" value="YELLOW"/>
+            <column name="price" valueNumeric="120.00"/>
+            <column name="availability" valueNumeric="12"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

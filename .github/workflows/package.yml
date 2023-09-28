@@ -1,0 +1,28 @@
+name: Docker Compose CI/CD
+
+on:
+  push:
+    branches:
+      - ghub
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Log in to GitHub Packages
+        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+
+      - name: Build and run Docker Compose
+        run: |
+          pwd
+          ls -l
+          docker-compose up -d
+        working-directory: ./
+
+      - name: Show containers logs
+        run: docker-compose logs
+        working-directory: ./
